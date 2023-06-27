@@ -9,16 +9,31 @@ jobs:
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v1
         
-      - name: Run MATLAB script that appends value to GITHUB_OUTPUT
-        id: matlab
+      - name: Assign values in MATLAB
+        id: my-matlab-step
         uses: matlab-actions/run-command@v1
         with:
           command: |
             myvalue = "hello world";
             
-            fid = fopen(getenv("GITHUB_OUTPUT"), "at");
-            fwrite(fid, "myvalue="+myvalue);
+            % Approach 1: Write a file named "my-value.txt"
+            writelines(myvalue, "my-value.txt");
+            
+            % Approach 2: Set an output parameter named "my-value"
+            fid = fopen(getenv("GITHUB_OUTPUT"), "a");
+            fwrite(fid, "my-value="+myvalue);
             fclose(fid);
             
-      - name: Print value in system shell
-        run: echo ${{ steps.matlab.outputs.myvalue }}
+            % Approach 3: Set an env variable named "MY_VALUE"
+            setenv("GITHUB_ENV", append(getenv("GITHUB_ENV"), "MY_VALUE="+myvalue));
+            
+      - name: Print the values in a shell script
+        run: |
+            # Approach 1: Access the "my-value.txt" file
+            cat my-value.txt
+            
+            # Approach 2: Access the "my-value" output parameter
+            echo ${{ steps.my-matlab-step.outputs.my-value }}
+            
+            # Approach 3: Access the "MY_VALUE" env variable
+            echo ${{ env.MY_VALUE }}
