@@ -25,7 +25,9 @@ jobs:
             fclose(fid);
             
             % Approach 3: Set an env variable named "MY_VALUE"
-            setenv("GITHUB_ENV", append(getenv("GITHUB_ENV"), "MY_VALUE="+myvalue));
+            fid = fopen(getenv("GITHUB_ENV"), "a");
+            fwrite(fid, "MY_VALUE="+myvalue);
+            fclose(fid);
             
       - name: Print the values in a shell script
         run: |
