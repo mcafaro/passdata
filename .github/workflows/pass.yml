@@ -18,4 +18,4 @@ jobs:
             setenv("GITHUB_OUTPUT", append(getenv("GITHUB_OUTPUT"), "matlab_value="+myvalue));
             
       - name: Print value
-        run: echo ${{ steps.matlab.outputs.pr_title }}
+        run: echo ${{ steps.matlab.outputs.matlab_value }}
