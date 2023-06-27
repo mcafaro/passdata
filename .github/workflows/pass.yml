@@ -9,7 +9,7 @@ jobs:
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v1
         
-      - name: Run MATLAB script
+      - name: Run MATLAB script that appends value to GITHUB_OUTPUT
         id: matlab
         uses: matlab-actions/run-command@v1
         with:
@@ -17,5 +17,5 @@ jobs:
             myvalue = "hello world";
             setenv("GITHUB_OUTPUT", append(getenv("GITHUB_OUTPUT"), "matlab_value="+myvalue));
             
-      - name: Print value
+      - name: Print value in system shell
         run: echo ${{ steps.matlab.outputs.matlab_value }}
