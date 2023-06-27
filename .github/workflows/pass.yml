@@ -15,9 +15,10 @@ jobs:
         with:
           command: |
             myvalue = "hello world";
-            getenv("GITHUB_OUTPUT")
-            setenv("GITHUB_OUTPUT", append(getenv("GITHUB_OUTPUT"),"matlab_value="+myvalue));
-            getenv("GITHUB_OUTPUT")
+            
+            fid = fopen(getenv("GITHUB_OUTPUT"), "at");
+            fwrite(fid, "myvalue="+myvalue);
+            fclose(fid);
             
       - name: Print value in system shell
-        run: echo ${{ steps.matlab.outputs.matlab_value }}
+        run: echo ${{ steps.matlab.outputs.myvalue }}
