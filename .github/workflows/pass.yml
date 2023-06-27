@@ -1,17 +1,21 @@
 on: [push]
 jobs:
   my-job:
-    name: Run MATLAB Script
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
+        
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v1
+        
       - name: Run MATLAB script
         id: matlab
         uses: matlab-actions/run-command@v1
         with:
           command: |
-            !echo "pr_title=MY_TITLE" >> $GITHUB_OUTPUT
-      - run: echo ${{ steps.matlab.outputs.pr_title }}
+            myvalue = "hello world";
+            setenv("GITHUB_OUTPUT", "matlab_value="+myvalue);
+            
+      - name: Print value
+        run: echo ${{ steps.matlab.outputs.pr_title }}
