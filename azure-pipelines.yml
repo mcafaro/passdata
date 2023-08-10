@@ -1,0 +1,16 @@
+pool:
+  vmImage: ubuntu-latest
+steps:
+  - task: InstallMATLAB@0
+  - task: RunMATLABCommand@0
+    inputs:
+      command: |
+        myvalue = "Yes";
+        disp("##vso[task.setvariable variable=doThing;isOutput=true]" + myvalue);
+    name: DetermineResult
+
+  - task: RunMATLABCommand@0
+    condition: eq(dependencies.Foo.outputs['DetermineResult.doThing'], 'Yes')
+    inputs:
+      command: |
+        disp("Job Foo ran and doThing is Yes.");
