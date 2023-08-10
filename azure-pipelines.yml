@@ -8,7 +8,7 @@ steps:
     inputs:
       command: |
         myvalue = "Yes";
-        disp(""##vso[task.setvariable variable=doThing]" + myvalue);
+        disp("##vso[task.setvariable variable=doThing]" + myvalue);
 
   # This step is able to use doThing, so it uses it in its condition
   - script: |
